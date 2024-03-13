@@ -21,7 +21,7 @@ def floatInput(inputMessage, errorMessage = "Invalid input, please try again.\n"
 def dateInput():
     while True:
         try:
-            date_s = input("Enter transaction date (formated as 'yyyy-mm-dd')")
+            date_s = input("Enter transaction date (formated as 'yyyy-mm-dd'): ")
             date_f = "%Y-%m-%d"
             datetime.strptime(date_s, date_f)
         except ValueError:
@@ -35,7 +35,7 @@ def loadTransactions():
         with open('transactions.json', 'r') as file: #open the file transactions.json in read mode
             transactions = json.load(file)
     except FileNotFoundError:
-        print("Saved transactions file does not exits\nAdding a new transaction will create one.\n")
+        print("Saved transactions data file does not exits, Adding a new transaction will create one.\n")
     except json.JSONDecodeError:
         print("Error decoding exixting JSON file\n")
     else:
@@ -58,8 +58,8 @@ def checkfordata():
 
 def returnToMainMenu():
     while True:
-        print("\n Enter 1 to return to main menu.\n Enter 0 to exit the program.")
-        selection = intInput("Your choice: ")
+        print("\nEnter 1 to return to main menu.\nEnter 0 to exit the program.")
+        selection = intInput(" Your choice: ")
         if selection == 1:
             print("Returning to main menu....\n")
             mainMenu()
@@ -74,7 +74,7 @@ def addTransaction():
     transactions = loadTransactions()
     if transactions == None:
         transactions = []
-    print("Add transaction")
+    print("\nAdd transaction")
     print('')
     while True:
         T_amount = floatInput("Enter the transaction amount: ", "Please enter a valid amount in numbers.")
@@ -117,7 +117,7 @@ def viewTransactions():
         returnToMainMenu()
     else:
         transactions = checkfordata()
-        print("View transactions")
+        print("\nView transactions")
         print('')
         for i in range(len(transactions)):
             print(f"{i+1} - {transactions[i]}")
@@ -152,9 +152,9 @@ def menuChoice():
         viewTransactions()
     elif choice == 3:
         updateTransaction()
-    elif choice == '4':
+    elif choice == 4:
         deleteTransaction()
-    elif choice == '5':
+    elif choice == 5:
         displaySummary()
     else:
         print("Exiting program.")
