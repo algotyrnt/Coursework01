@@ -47,11 +47,14 @@ def saveTransactions(transactions):
 
 def checkfordata():
     transactions = loadTransactions()
-    if len(transactions) == 0 or transactions == None:
+    if transactions == None:
         print("There is no saved transactions.")
         return False
     else:
-        return transactions
+        if len(transactions) > 0:
+            return transactions
+        else:
+            return False
 
 def returnToMainMenu():
     while True:
