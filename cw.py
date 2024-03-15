@@ -98,34 +98,127 @@ def addTransaction():
         else:
             print("Input is not valid, check and try again. Input should be 1 or 2.")
     T_date = dateInput()
-
     transaction = [T_amount, T_category, T_type, T_date]
     transactions.append(transaction)
     saveTransactions(transactions)
-
     print("\nTransaction successfully added.")
-    returnToMainMenu()
 
-def viewTransactions():
+def viewTransactions(topic = "\nView Transactions"):
     transactions = loadTransactions()
     if transactions == False:
-        print("There is no saved transactions, You need to have saved transactions to complete this action")
-        returnToMainMenu()
+        print("There is no saved transactions, You need to have saved transactions to complete this action.")
     else:
-        print("\nView transactions")
+        print(topic)
         print('')
         print("ID  Transaction")
         for i in range(len(transactions)):
             print(f"{i+1} - {transactions[i]}")
-        print("")
-        print("All transactions loded.")
-        returnToMainMenu()
+        print('')
+        print("All saved transactions loded.")
+        return transactions
+
+def updateConf(transactions, ID, ChangeID, value, message):
+    while True:
+        yesno = input(f"Are you sure you want to update the transaction {message} (y/n): ").lower()
+        if yesno == 'y':
+            transactions[ID-1][ChangeID-1] = value
+            saveTransactions(transactions)
+            print(f"Transaction {message} updated succsessfully.")
+            break
+        elif yesno == 'n':
+            print(f"Transaction {message} did not get updated.")
+            break
+        else:
+            print("Invalid input, Enter 'y' for yes and 'n' for no")
 
 def updateTransaction():
-    pass
+    transactions = viewTransactions("\nUpdate Transactions")
+    print('')
+    while True:
+        ID = intInput("Enter the ID of the transaction you want to update: ")
+        if ID-1 <= len(transactions):
+            print('')
+            print(f"{ID} - {transactions[ID-1]}")
+            print('')
+            print("1. Amount")
+            print("2. Category")
+            print("3. Type")
+            print("4. Date")
+            while True:
+                ChangeID = intInput("Select what data you want change: ")
+                if ChangeID == 1:
+                    while True:
+                        T_amount = floatInput("Enter the new transaction amount: ", "Please enter a valid amount in numbers.")
+                        if T_amount > 0:
+                            updateConf(transactions, ID, ChangeID, T_amount, "amount")
+                            break
+                        else:
+                            print("Please enter a valid amount (amount should be higher than 0).")
+                    break
+                elif ChangeID == 2:
+                    while True:
+                        T_category = input("Enter the new category of the transaction: ")
+                        if len(T_category) > 0:
+                            updateConf(transactions, ID, ChangeID, T_category, "category")
+                            break
+                        else:
+                            print("You can't keep transaction category empty.")
+                    break
+                elif ChangeID == 3:
+                    print("Transaction type")
+                    print(" 1. Income")
+                    print(" 2. Expense")
+                    while True:
+                        T_typeN = intInput("Enter the new transaction type (1/2): ", "Input is not valid, check and try again. Input should be 1 or 2.")
+                        if T_typeN == 1:
+                            T_type = "Income"
+                            updateConf(transactions, ID, ChangeID, T_type, "type")
+                            break
+                        elif T_typeN == 2:
+                            T_type = "Expense"
+                            updateConf(transactions, ID, ChangeID, T_type, "type")
+                            break
+                        else:
+                            print("Input is not valid, check and try again. Input should be 1 or 2.")
+                    break
+                elif ChangeID == 4:
+                    T_date = dateInput()
+                    updateConf(transactions, ID, ChangeID, T_date, "date")
+                    break
+                else:
+                    print("Please select a valid input.")
+            anotherEdit = input("Enter 'a' to change another data type.").lower()
+            if anotherEdit == 'a':
+                continue
+            else:
+                break
+        else:
+            print("Please enter a valid transaction ID.")
 
 def deleteTransaction():
-    pass
+    transactions = viewTransactions("\nDelete Transactions")
+    print('')
+    while True:
+        ID = intInput("Enter the ID of the transaction you want to delete: ")
+        if ID-1 <= len(transactions):
+            print('')
+            print(f"{ID} - {transactions[ID-1]}")
+            print('')
+            while True:
+                yesno = input("Are you sure you want to delete this transaction (y/n): ").lower()
+                if yesno == 'y':
+                    del transactions[ID-1]
+                    saveTransactions(transactions)
+                    print("Transaction deleted succsessfully.")
+                    break
+                elif yesno == 'n':
+                    print("Transaction not deleted.")
+                    break
+                else:
+                    print("Invalid input, Enter 'y' for yes and 'n' for no")
+            break
+        else:
+            print("Please enter a valid transaction ID.")
 
 def printSummary(count, value):
     print(f" Total number of transactions:  {count}")
@@ -139,11 +232,10 @@ def displaySummary():
     ExpensesCount = 0
     if transactions == False:
         print("There is no saved transactions, You need to have saved transactions to complete this action")
-        returnToMainMenu()
     else:
         print("\nTransactions summary")
         print('')
-        print(f"Total number of transactions :  {len(transactions)}")
+        print(f"Total number of transactions :  {len(transactions)+1}")
         print('')
         for i in range(len(transactions)):
             if transactions[i][2] == "Income":
@@ -158,7 +250,6 @@ def displaySummary():
         printSummary(ExpensesCount, TotalExpensesA)
         print("")
         print("end of the summary.")
-        returnToMainMenu()
 
 def menuChoice():
     while True:
@@ -180,7 +271,9 @@ def menuChoice():
     elif choice == 5:
         displaySummary()
     else:
-        print("Exiting program.")
+        print("Exiting the program....\n")
+        exit()
+    returnToMainMenu()
         
 
 def mainMenu():
