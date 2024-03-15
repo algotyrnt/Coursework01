@@ -31,6 +31,7 @@ def dateInput():
 
 #file handelling functions
 def loadTransactions():
+    transactions = None
     try:
         with open('transactions.json', 'r') as file: #open the file transactions.json in read mode
             transactions = json.load(file)
@@ -38,23 +39,17 @@ def loadTransactions():
         print("Saved transactions data file does not exits, Adding a new transaction will create one.\n")
     except json.JSONDecodeError:
         print("Error decoding exixting JSON file\n")
-    else:
-        return transactions
+    finally:
+        if transactions == None:
+            return False
+        elif len(transactions) == 0:
+            return False
+        else:
+            return transactions
 
 def saveTransactions(transactions):
     with open('transactions.json', 'w') as file: # open the file transactions.json in write mode
-        json.dump(transactions, file)
-
-def checkfordata():
-    transactions = loadTransactions()
-    if transactions == None:
-        print("There is no saved transactions.")
-        return False
-    else:
-        if len(transactions) > 0:
-            return transactions
-        else:
-            return False
+        json.dump(transactions, file, indent=1)
 
 def returnToMainMenu():
     while True:
@@ -64,6 +59,7 @@ def returnToMainMenu():
             print("Returning to main menu....\n")
             mainMenu()
         elif selection == 0:
+            print("Exiting the program....\n")
             exit()
         else:
             print("Please enter a valid number.")
@@ -72,7 +68,7 @@ def returnToMainMenu():
 
 def addTransaction():
     transactions = loadTransactions()
-    if transactions == None:
+    if transactions == False:
         transactions = []
     print("\nAdd transaction")
     print('')
@@ -110,15 +106,15 @@ def addTransaction():
     print("\nTransaction successfully added.")
     returnToMainMenu()
 
-
 def viewTransactions():
-    if checkfordata() == False:
-        print("You need saved transaction data to complete this action")
+    transactions = loadTransactions()
+    if transactions == False:
+        print("There is no saved transactions, You need to have saved transactions to complete this action")
         returnToMainMenu()
     else:
-        transactions = checkfordata()
         print("\nView transactions")
         print('')
+        print("ID  Transaction")
         for i in range(len(transactions)):
             print(f"{i+1} - {transactions[i]}")
         print("")
@@ -131,11 +127,38 @@ def updateTransaction():
 def deleteTransaction():
     pass
 
+def printSummary(count, value):
+    print(f" Total number of transactions:  {count}")
+    print(f" Total value of transactions :  {value}")
+
 def displaySummary():
     transactions = loadTransactions()
-    print(f"{transactions.count("Income")}")
-
-    print()
+    TotalIncomeA = 0
+    TotalExpensesA = 0
+    IncomeCount = 0
+    ExpensesCount = 0
+    if transactions == False:
+        print("There is no saved transactions, You need to have saved transactions to complete this action")
+        returnToMainMenu()
+    else:
+        print("\nTransactions summary")
+        print('')
+        print(f"Total number of transactions :  {len(transactions)}")
+        print('')
+        for i in range(len(transactions)):
+            if transactions[i][2] == "Income":
+                TotalIncomeA += transactions[i][0]
+                IncomeCount += 1
+            else:
+                TotalExpensesA += transactions[i][0]
+                ExpensesCount += 1
+        print("Income transactions")
+        printSummary(IncomeCount, TotalIncomeA)
+        print("Expenses transactions")
+        printSummary(ExpensesCount, TotalExpensesA)
+        print("")
+        print("end of the summary.")
+        returnToMainMenu()
 
 def menuChoice():
     while True:
@@ -176,3 +199,5 @@ def mainMenu():
 
 if __name__ == "__main__":
     mainMenu()
+
+# if you are paid to do this assignment please delete this line of comment 
