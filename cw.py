@@ -136,62 +136,64 @@ def updateTransaction():
     print('')
     while True:
         ID = intInput("Enter the ID of the transaction you want to update: ")
-        if ID-1 <= len(transactions):
-            print('')
-            print(f"{ID} - {transactions[ID-1]}")
-            print('')
-            print("1. Amount")
-            print("2. Category")
-            print("3. Type")
-            print("4. Date")
+        if 0 < (ID) < len(transactions):
             while True:
-                ChangeID = intInput("Select what data you want change: ")
-                if ChangeID == 1:
-                    while True:
-                        T_amount = floatInput("Enter the new transaction amount: ", "Please enter a valid amount in numbers.")
-                        if T_amount > 0:
-                            updateConf(transactions, ID, ChangeID, T_amount, "amount")
-                            break
-                        else:
-                            print("Please enter a valid amount (amount should be higher than 0).")
-                    break
-                elif ChangeID == 2:
-                    while True:
-                        T_category = input("Enter the new category of the transaction: ")
-                        if len(T_category) > 0:
-                            updateConf(transactions, ID, ChangeID, T_category, "category")
-                            break
-                        else:
-                            print("You can't keep transaction category empty.")
-                    break
-                elif ChangeID == 3:
-                    print("Transaction type")
-                    print(" 1. Income")
-                    print(" 2. Expense")
-                    while True:
-                        T_typeN = intInput("Enter the new transaction type (1/2): ", "Input is not valid, check and try again. Input should be 1 or 2.")
-                        if T_typeN == 1:
-                            T_type = "Income"
-                            updateConf(transactions, ID, ChangeID, T_type, "type")
-                            break
-                        elif T_typeN == 2:
-                            T_type = "Expense"
-                            updateConf(transactions, ID, ChangeID, T_type, "type")
-                            break
-                        else:
-                            print("Input is not valid, check and try again. Input should be 1 or 2.")
-                    break
-                elif ChangeID == 4:
-                    T_date = dateInput()
-                    updateConf(transactions, ID, ChangeID, T_date, "date")
-                    break
+                print('')
+                print(f"{ID} - {transactions[ID-1]}")
+                print('')
+                print("1. Amount")
+                print("2. Category")
+                print("3. Type")
+                print("4. Date")
+                while True:
+                    ChangeID = intInput("Select what data you want change: ")
+                    if ChangeID == 1:
+                        while True:
+                            T_amount = floatInput("Enter the new transaction amount: ", "Please enter a valid amount in numbers.")
+                            if T_amount > 0:
+                                updateConf(transactions, ID, ChangeID, T_amount, "amount")
+                                break
+                            else:
+                                print("Please enter a valid amount (amount should be higher than 0).")
+                        break
+                    elif ChangeID == 2:
+                        while True:
+                            T_category = input("Enter the new category of the transaction: ")
+                            if len(T_category) > 0:
+                                updateConf(transactions, ID, ChangeID, T_category, "category")
+                                break
+                            else:
+                                print("You can't keep transaction category empty.")
+                        break
+                    elif ChangeID == 3:
+                        print("Transaction type")
+                        print(" 1. Income")
+                        print(" 2. Expense")
+                        while True:
+                            T_typeN = intInput("Enter the new transaction type (1/2): ", "Input is not valid, check and try again. Input should be 1 or 2.")
+                            if T_typeN == 1:
+                                T_type = "Income"
+                                updateConf(transactions, ID, ChangeID, T_type, "type")
+                                break
+                            elif T_typeN == 2:
+                                T_type = "Expense"
+                                updateConf(transactions, ID, ChangeID, T_type, "type")
+                                break
+                            else:
+                                print("Input is not valid, check and try again. Input should be 1 or 2.")
+                        break
+                    elif ChangeID == 4:
+                        T_date = dateInput()
+                        updateConf(transactions, ID, ChangeID, T_date, "date")
+                        break
+                    else:
+                        print("Please select a valid input.")
+                anotherEdit = input("Enter 'A' to change another data type in the selected transaction, Enter any ket to exit : ").lower()
+                if anotherEdit == 'a':
+                    continue
                 else:
-                    print("Please select a valid input.")
-            anotherEdit = input("Enter 'a' to change another data type.").lower()
-            if anotherEdit == 'a':
-                continue
-            else:
-                break
+                    break
+            break
         else:
             print("Please enter a valid transaction ID.")
 
@@ -200,7 +202,9 @@ def deleteTransaction():
     print('')
     while True:
         ID = intInput("Enter the ID of the transaction you want to delete: ")
-        if ID-1 <= len(transactions):
+        print(ID-1)
+        print(len(transactions))
+        if 0 < (ID) < len(transactions):
             print('')
             print(f"{ID} - {transactions[ID-1]}")
             print('')
