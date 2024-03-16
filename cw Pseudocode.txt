@@ -1,141 +1,211 @@
 ﻿Start
 
-Import json
-Import datetime
+    Import json
+    Import datetime
 
+    FUNCTION intInput(inputMessage, errorMessage)
+        WHILE no valid input is given DO
+            Ask the user for a Input
+            convert input to an integer
+            IF input is not an integer
+                PRINT error message
+            ELSE
+                RETURN the integer
+            End IF
+        END WHILE
+    END FUNCTION
 
-Define function intInput(inputMessage, errorMessage)
-    Loop until valid input is received
-        Try to convert input to an integer
-        If input is not an integer
-            print error message
-        Else 
-            return the integer
-        End If
-    End loop
+    FUNCTION floatInput(inputMessage, errorMessage)
+        WHILE no valid input is given DO
+            Ask the user for a Input
+            convert input to a float
+            IF input is not a float
+                PRINT error message
+            ELSE
+                RETURN the integer
+            End IF
+        END WHILE
+    END FUNCTION
 
+    FUNCTION dateInput()
+        While valid date Input not given DO
+            Ask the user for a date Input
+            TRY to parse input as date in 'yyyy-mm-dd' format
+            IF input is not a valid date
+                PRINT error message
+            ELSE
+                RETURN the date string
+            END IF
+        END WHILE
+    END FUNCTION
 
-Define function floatInput(inputMessage, errorMessage)
-    Loop until valid input is received
-        Try to convert input to a float
-        If input is not a float
-            print error message
-        Else, return the float
+    FUNCTION loadTransactions()
+        TRY to open 'transactions.json' file for reading
+        IF file not found 
+            PRINT error message and RETURN False
+        ELSE IF error decoding JSON data
+            PRINT error message and RETURN False
+        END IF
+        IF no transactions or error, 
+            RETURN False
+        ELSE 
+            RETURN transactions
+        END IF
+        CLOSE file
+    END FUNCTION
 
+    FUNCTION saveTransactions(transactions)
+        OPEN 'transactions.json' file for writing
+        WRITE transactions data to file in JSON format
+        CLOSE file
+    END FUNCTION
 
-Define function dateInput()
-    Loop until valid date input is received
-        Try to parse input as date in 'yyyy-mm-dd' format
-        If input is not a valid date, print error message
-        Else, return the date string
+    FUNCTION returnToMainMenu()
+        WHILE valid input for choice is not given DO
+            PRINT option for returning to main menu or exiting program
+            PROMPT user for choice
+            IF choice is to return to main menu
+                PRINT main menu message 
+                mainMenu()
+            ELSE IF choice is to exit program, 
+                PRINT exit message 
+                EXIT program
+            ELSE 
+                PRINT error message and CONTINUE loop
+        END WHILE
+    END FUNCTION
 
+    FUNCTION addTransaction()
+        transactions = loadTransactions()
+        IF no transactions
+            INITIALIZE empty list called transactions
+        End IF
+        PROMPT user for transaction details (amount, category, type, date)
+        VALIDATE input for amount, category, type, and date 
+        CREATE new transaction sublist with input details
+        APPEND the new transaction sublist to the transactions list
+        SAVE updated transactions to file
+        PRINT success message
+    END FUNCTION
 
-Define function loadTransactions()
-    Try to open 'transactions.json' file for reading
-    If file not found, print error message and return False
-    If error decoding JSON data, print error message and return False
-    If no transactions or error, return False
-    Otherwise, return loaded transactions
+    FUNCTION viewTransactions(topic)
+        transactions = loadTransactions() 
+        IF no transactions
+            PRINT error message and RETURN False
+        ELSE
+            PRINT topic
+            PRINT table header
+            LOOP through transactions 
+                PRINT each transaction with its index +1 as ID
+            END LOOP
+            PRINT all transactions loaded
+            RETURN transactions list
+        END IF
+    END FUNCTION
 
+    FUNCTION updateConf(transactions, ID, ChangeID, value, message)
+        WHILE no valid input is given DO
+            PROMPT user for confirmation to update transaction
+            IF yes
+                UPDATE transaction with new value
+                SAVE updated transactions to file
+                PRINT success message
+            ELSE 
+                PRINT cancellation message
+            END IF
+        END While
+    END FUNCTION
 
-Define function saveTransactions(transactions)
-    Open 'transactions.json' file for writing
-    Write transactions data to file in JSON format
-    Close file
+    FUNCTION updateTransaction()
+        CALL viewTransactions() to display transactions
+        PROMPT user for transaction ID to update
+        IF ID is valid
+            PRINT current transaction details
+            LOOP the code for user to update data
+                PROMPT user for which detail to update (amount, category, type, date)
+                IF detail is amount:
+                    PROMPT for new amount and UPDATE
+                    updateConf()
+                ELSE IF detail is category:
+                    PROMPT for new category and UPDATE
+                    updateConf()
+                ELSE IF detail is type:
+                    PROMPT for new type and UPDATE
+                    updateConf()
+                ELSE IF detail is date:
+                    PROMPT for new date and UPDATE
+                    updateConf()
+                END IF
+                PROMPT user for further updates or exit
+                IF yes
+                    CONTINUE the loop
+                ELSE
+                    END loop
+        ELSE
+            Ask for a valid ID
+    END FUNCTION
 
+    FUNCTION deleteTransaction()
+        CALL viewTransactions() to display transactions
+        WHILE
+            PROMPT user for transaction ID to delete
+            IF ID is valid
+                PRINT current transaction details
+                PROMPT user for confirmation to delete transaction
+                IF yes:
+                    DELETE transaction from list
+                    SAVE updated transactions to file
+                    PRINT success message
+                ELSE 
+                    PRINT cancellation message
+                END IF
+                END LOOP
+            ELSE
+                continue the LOOP
+    END FUNCTION 
 
-Define function returnToMainMenu()
-    Loop until valid choice is made
-        Print menu for returning to main menu or exiting program
-        Prompt user for choice
-        If choice is to return to main menu, call mainMenu() function
-        If choice is to exit program, print exit message and exit program
-        Otherwise, print error message and continue loop
+    FUNCTION printSummary(count, value)
+        PRINT transaction count and total value
+    END FUNCTION
 
+    FUNCTION displaySummary()
+        transactions = loadTransactions()
+        IF no transactions
+            PRINT error message
+            returnToMainMenu()
+        ELSE
+            INITIALIZE variables for total income, total expenses, income count, and expenses count
+            LOOP through transactions
+                IF transaction type is income
+                    ADD amount to total income and INCREMENT income count
+                ELSE
+                    ADD amount to total expenses and INCREMENT expenses count
+                END IF
+            END LOOP
+            PRINT summary of income transactions using printSummary(count and total value)
+            PRINT summary of expense transactions using printSummary(count and total value)
+        END IF
+    END FUNCTION
 
-Define function addTransaction()
-    Load transactions from file
-    If no transactions, initialize empty list
-    Prompt user for transaction details (amount, category, type, date)
-    Validate input for amount, category, type, and date
-    Add transaction details to transactions list
-    Save updated transactions to file
-    Print success message
+    FUNCTION menuChoice()
+        LOOP UNTIL valid choice is made
+            PRINT main menu options
+            PROMPT user for choice
+            IF choice is valid
+                CALL corresponding function
+                END LOOP
+            ELSE
+                PRINT error message and CONTINUE loop
+            END IF
+    END FUNCTION
 
+    FUNCTION mainMenu()
+        PRINT main menu options
+        menuChoice()
+    END FUNCTION
 
-Define function viewTransactions(topic)
-    Load transactions from file
-    If no transactions, print error message and return False
-    Print topic
-    Print table header
-    Loop through transactions and print each transaction with its index
-    Print all transactions loaded
-    Return transactions list
+    IF script is executed directly
+        mainMenu()
+    END IF
 
-
-Define function updateConf(transactions, ID, ChangeID, value, message)
-    Loop until valid choice is made
-        Prompt user for confirmation to update transaction
-        If yes, update transaction with new value
-        Save updated transactions to file
-        Print success message
-        If no, print cancellation message
-        Otherwise, print error message and continue loop
-
-
-Define function updateTransaction()
-    Call viewTransactions() to display transactions
-    Prompt user for transaction ID to update
-    If ID is valid, print current transaction details
-    Prompt user for which detail to update (amount, category, type, date)
-    If detail is amount, prompt for new amount and update
-    If detail is category, prompt for new category and update
-    If detail is type, prompt for new type and update
-    If detail is date, prompt for new date and update
-    Prompt user for further updates or exit
-    Call updateConf() to update transaction details
-
-
-Define function deleteTransaction()
-    Call viewTransactions() to display transactions
-    Prompt user for transaction ID to delete
-    If ID is valid, print current transaction details
-    Prompt user for confirmation to delete transaction
-    If yes, delete transaction from list
-    Save updated transactions to file
-    Print success message
-
-
-Define function printSummary(count, value)
-    Print summary of transaction count and total value
-
-
-Define function displaySummary()
-    Load transactions from file
-    If no transactions, print error message and return
-    Initialize variables for total income, total expenses, income count, and expenses count
-    Loop through transactions
-        If transaction type is income, add amount to total income and increment income count
-        If transaction type is expense, add amount to total expenses and increment expenses count
-    Print summary of income transactions (count and total value)
-    Print summary of expense transactions (count and total value)
-
-
-Define function menuChoice()
-    Loop until valid choice is made
-        Print main menu options
-        Prompt user for choice
-        If choice is valid, call corresponding function
-        Otherwise, print error message and continue loop
-
-
-Define function mainMenu()
-    Print main menu header
-    Call menuChoice() to handle user choice
-
-
-If script is executed directly
-    Call mainMenu() to start program execution
-
-
-End
+END

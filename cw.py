@@ -21,11 +21,11 @@ def floatInput(inputMessage, errorMessage = "Invalid input, please try again.\n"
 def dateInput():
     while True:
         try:
-            date_s = input("Enter transaction date (formated as 'yyyy-mm-dd'): ")
+            date_s = input("Enter transaction date (formatted as 'yyyy-mm-dd'): ")
             date_f = "%Y-%m-%d"
             datetime.strptime(date_s, date_f)
         except ValueError:
-            print("Invalid input, please enter transaction date formated as 'yyyy-mm-dd'")
+            print("Invalid input, please enter valid transaction date formatted as 'yyyy-mm-dd'")
         else:
             return date_s
 
@@ -36,7 +36,7 @@ def loadTransactions():
         with open('transactions.json', 'r') as file: #open the file transactions.json in read mode
             transactions = json.load(file)
     except FileNotFoundError:
-        print("Saved transactions data file does not exits, Adding a new transaction will create one.\n")
+        print("Saved transactions data file does not exist, Adding a new transaction will create one.")
     except json.JSONDecodeError:
         print("Error decoding exixting JSON file\n")
     finally:
