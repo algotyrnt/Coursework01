@@ -1,0 +1,141 @@
+﻿Start
+
+Import json
+Import datetime
+
+
+Define function intInput(inputMessage, errorMessage)
+    Loop until valid input is received
+        Try to convert input to an integer
+        If input is not an integer
+            print error message
+        Else 
+            return the integer
+        End If
+    End loop
+
+
+Define function floatInput(inputMessage, errorMessage)
+    Loop until valid input is received
+        Try to convert input to a float
+        If input is not a float
+            print error message
+        Else, return the float
+
+
+Define function dateInput()
+    Loop until valid date input is received
+        Try to parse input as date in 'yyyy-mm-dd' format
+        If input is not a valid date, print error message
+        Else, return the date string
+
+
+Define function loadTransactions()
+    Try to open 'transactions.json' file for reading
+    If file not found, print error message and return False
+    If error decoding JSON data, print error message and return False
+    If no transactions or error, return False
+    Otherwise, return loaded transactions
+
+
+Define function saveTransactions(transactions)
+    Open 'transactions.json' file for writing
+    Write transactions data to file in JSON format
+    Close file
+
+
+Define function returnToMainMenu()
+    Loop until valid choice is made
+        Print menu for returning to main menu or exiting program
+        Prompt user for choice
+        If choice is to return to main menu, call mainMenu() function
+        If choice is to exit program, print exit message and exit program
+        Otherwise, print error message and continue loop
+
+
+Define function addTransaction()
+    Load transactions from file
+    If no transactions, initialize empty list
+    Prompt user for transaction details (amount, category, type, date)
+    Validate input for amount, category, type, and date
+    Add transaction details to transactions list
+    Save updated transactions to file
+    Print success message
+
+
+Define function viewTransactions(topic)
+    Load transactions from file
+    If no transactions, print error message and return False
+    Print topic
+    Print table header
+    Loop through transactions and print each transaction with its index
+    Print all transactions loaded
+    Return transactions list
+
+
+Define function updateConf(transactions, ID, ChangeID, value, message)
+    Loop until valid choice is made
+        Prompt user for confirmation to update transaction
+        If yes, update transaction with new value
+        Save updated transactions to file
+        Print success message
+        If no, print cancellation message
+        Otherwise, print error message and continue loop
+
+
+Define function updateTransaction()
+    Call viewTransactions() to display transactions
+    Prompt user for transaction ID to update
+    If ID is valid, print current transaction details
+    Prompt user for which detail to update (amount, category, type, date)
+    If detail is amount, prompt for new amount and update
+    If detail is category, prompt for new category and update
+    If detail is type, prompt for new type and update
+    If detail is date, prompt for new date and update
+    Prompt user for further updates or exit
+    Call updateConf() to update transaction details
+
+
+Define function deleteTransaction()
+    Call viewTransactions() to display transactions
+    Prompt user for transaction ID to delete
+    If ID is valid, print current transaction details
+    Prompt user for confirmation to delete transaction
+    If yes, delete transaction from list
+    Save updated transactions to file
+    Print success message
+
+
+Define function printSummary(count, value)
+    Print summary of transaction count and total value
+
+
+Define function displaySummary()
+    Load transactions from file
+    If no transactions, print error message and return
+    Initialize variables for total income, total expenses, income count, and expenses count
+    Loop through transactions
+        If transaction type is income, add amount to total income and increment income count
+        If transaction type is expense, add amount to total expenses and increment expenses count
+    Print summary of income transactions (count and total value)
+    Print summary of expense transactions (count and total value)
+
+
+Define function menuChoice()
+    Loop until valid choice is made
+        Print main menu options
+        Prompt user for choice
+        If choice is valid, call corresponding function
+        Otherwise, print error message and continue loop
+
+
+Define function mainMenu()
+    Print main menu header
+    Call menuChoice() to handle user choice
+
+
+If script is executed directly
+    Call mainMenu() to start program execution
+
+
+End
