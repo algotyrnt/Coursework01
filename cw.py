@@ -1,8 +1,9 @@
 import json
 from datetime import datetime
 
-#functions for inputs and error handelling
-def intInput(inputMessage, errorMessage = "Invalid input, please try again.\n"):
+#functions for inputs with error handelling
+def intInput(inputMessage, errorMessage = "Invalid input, please try again.\n"): 
+    #Get integer input from the user with error handling.
     while True:
         try:
             num = int(input(inputMessage))
@@ -10,7 +11,9 @@ def intInput(inputMessage, errorMessage = "Invalid input, please try again.\n"):
             print(errorMessage)
         else:
             return num
-def floatInput(inputMessage, errorMessage = "Invalid input, please try again.\n"):
+
+def floatInput(inputMessage, errorMessage = "Invalid input, please try again.\n"): 
+    #Get floating-point input from the user with error handling.
     while True:
         try:
             num = float(input(inputMessage))
@@ -18,7 +21,9 @@ def floatInput(inputMessage, errorMessage = "Invalid input, please try again.\n"
             print(errorMessage)
         else:
             return num
+
 def dateInput():
+    #Get date input from the user with error handling.
     while True:
         try:
             date_s = input("Enter transaction date (formatted as 'yyyy-mm-dd'): ")
@@ -30,6 +35,7 @@ def dateInput():
             return date_s
 
 def amountInput():
+    #Get transaction amount input from the user with error handling.
     while True:
         amount = floatInput("Enter the transaction amount: ", "Please enter a valid transaction amount in numbers.\n")
         fractionalAmount = str(amount).split('.')[1]
@@ -43,6 +49,7 @@ def amountInput():
 
 #file handelling functions
 def loadTransactions():
+    #Load transactions from the JSON file.
     transactions = None
     try:
         with open('transactions.json', 'r') as file: #open the file transactions.json in read mode
@@ -60,10 +67,12 @@ def loadTransactions():
             return transactions
 
 def saveTransactions(transactions):
+    #Save transactions to a JSON file.
     with open('transactions.json', 'w') as file: # open the file transactions.json in write mode
         json.dump(transactions, file, indent=1)
 
 def returnToMainMenu():
+    #Prompt the user to return to the main menu or exit the program.
     while True:
         print("\nEnter 1 to return to main menu.\nEnter 0 to exit the program.")
         selection = intInput(" Your choice: ")
@@ -78,8 +87,10 @@ def returnToMainMenu():
             continue
         break
 
+# Feature implementations
 def addTransaction():
-    transactions = loadTransactions()
+    #Add a new transaction.
+    transactions = loadTransactions() # Load transactions at the start
     if transactions == False:
         transactions = []
     print("\nAdd transaction")
@@ -111,6 +122,7 @@ def addTransaction():
     print("\nTransaction successfully added.")
 
 def viewTransactions(topic = "\nView Transactions"):
+    #View all saved transactions.
     transactions = loadTransactions()
     if transactions == False:
         print("There are no saved transactions, You need to have saved transactions to complete this action.")
@@ -125,6 +137,7 @@ def viewTransactions(topic = "\nView Transactions"):
         return transactions
 
 def updateConf(transactions, ID, ChangeID, value, message):
+    #Prompt the confirmation from user to update a specific attribute of a transaction.
     while True:
         yesno = input(f"Are you sure you want to update the transaction {message} (y/n): ").lower()
         if yesno == 'y':
@@ -139,7 +152,8 @@ def updateConf(transactions, ID, ChangeID, value, message):
             print("Invalid input, Enter 'y' for yes and 'n' for no")
 
 def updateTransaction():
-    transactions = viewTransactions("\nUpdate Transactions")
+    #Update an existing transaction.
+    transactions = viewTransactions("\nUpdate Transactions") #View transactions at start
     print('')
     while True:
         ID = intInput("Enter the ID of the transaction you want to update: ")
@@ -200,7 +214,8 @@ def updateTransaction():
             print("Please enter a valid transaction ID.")
 
 def deleteTransaction():
-    transactions = viewTransactions("\nDelete Transactions")
+    #Delete an existing transaction.
+    transactions = viewTransactions("\nDelete Transactions") #View transactions at start
     print('')
     while True:
         ID = intInput("Enter the ID of the transaction you want to delete: ")
@@ -225,12 +240,14 @@ def deleteTransaction():
             print("Please enter a valid transaction ID.")
 
 def printSummary(count, value):
+    #Print a summary of a transaction type.
     amount = "{:.2f}".format(value)
     print(f" Total number of transactions:  {count}")
     print(f" Total value of transactions :  {amount}")
 
 def displaySummary():
-    transactions = loadTransactions()
+    #Display summary of transactions.
+    transactions = loadTransactions() # Load transactions at the start
     TotalIncomeA = 0
     TotalExpensesA = 0
     IncomeCount = 0
@@ -257,6 +274,7 @@ def displaySummary():
         print("end of the summary.")
 
 def menuChoice():
+    #Handle user menu choice.
     while True:
         choice = intInput("Enter your choice : ")
         if 1 <= choice <= 6:
@@ -278,11 +296,10 @@ def menuChoice():
     else:
         print("Exiting the program....\n")
         exit()
-    returnToMainMenu()
+    returnToMainMenu() #calls return to menu/exit function
         
-
 def mainMenu():
-
+    #Main menu of the program.
     print("Personal Finance Tracker")
     print('')
     print("1. Add Transaction")
@@ -293,7 +310,7 @@ def mainMenu():
     print("6. Exit")
     print('')
 
-    menuChoice()
+    menuChoice() #calls menu choice function
 
 if __name__ == "__main__":
     mainMenu()

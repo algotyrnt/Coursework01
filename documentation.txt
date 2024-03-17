@@ -28,7 +28,7 @@ Libraries used:
     b. saveTransactions(transactions)
         This function saves the provided transactions list to a JSON file named 'transactions.json'.
 
-3. Transaction Management Functions:
+3. Transaction feature implementations Functions:
     a. addTransaction()
         This function allows the user to add a new transaction. 
         It prompts the user for transaction details (amount, category, type, date) and adds the transaction to the list of transactions.
