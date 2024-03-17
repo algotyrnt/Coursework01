@@ -39,6 +39,18 @@
         END WHILE
     END FUNCTION
 
+    Function amountInput():
+        Loop until valid input is received
+            Call floatInput() function to prompt user for transaction amount
+            Split the transaction amount to check for fractional part
+            If amount is greater than 0 and fractional part has less than 3 digits
+                Format amount to have exactly two decimal places
+                Return formatted amount string
+                Break out of loop
+            Else
+                print error message and continue Loop
+    END FUNCTION
+
     FUNCTION loadTransactions()
         TRY to open 'transactions.json' file for reading
         IF file not found 

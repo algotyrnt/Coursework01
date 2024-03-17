@@ -1,0 +1,23 @@
+For this application, transactions will be stored and manipulated using a nested list data structure. 
+Each transaction will be represented as a sublist containing the following elements:
+
+ Amount: Float value converted into String value with two decimal points representing the transaction amount.
+ Category: String representing the category of the transaction.
+ Type: String representing the type of transaction (Income or Expense).
+ Date: String representing the date of the transaction (formatted as 'yyyy-mm-dd').
+
+The overall data structure will be a list of transactions, where each transaction is represented as a sublist.
+
+    [["1320.75", "Bonus", "Income", "2024-1-25"],["150.50", "Lunch", "Expense", "2024-1-18"]]
+
+Each sublist represents a single transaction.
+
+ The first element of each sublist is the transaction amount.
+ The second element is the transaction category.
+ The third element is the transaction type.
+ The fourth element is the transaction date.
+
+This design allows for easy manipulation and management of transactions. 
+For example, adding a new transaction involves appending a new sublist to the transactions list. 
+For updating or deleting a transaction involves modifying or removing the corresponding sublist. 
+Additionally, iterating through the transactions list allows for generating summaries, displaying transactions.

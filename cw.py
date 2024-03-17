@@ -25,9 +25,21 @@ def dateInput():
             date_f = "%Y-%m-%d"
             datetime.strptime(date_s, date_f)
         except ValueError:
-            print("Invalid input, please enter valid transaction date formatted as 'yyyy-mm-dd'")
+            print("Invalid input, please enter valid transaction date formatted as 'yyyy-mm-dd'\n")
         else:
             return date_s
+
+def amountInput():
+    while True:
+        amount = floatInput("Enter the transaction amount: ", "Please enter a valid transaction amount in numbers.\n")
+        fractionalAmount = str(amount).split('.')[1]
+        print(fractionalAmount)
+        if amount > 0 and len(fractionalAmount) < 3:
+            amount_str = "{:.2f}".format(amount)
+            return amount_str
+            break
+        else:
+            print("Please enter a valid transaction amount.\n")
 
 #file handelling functions
 def loadTransactions():
@@ -38,7 +50,7 @@ def loadTransactions():
     except FileNotFoundError:
         print("Saved transactions data file does not exist, Adding a new transaction will create one.")
     except json.JSONDecodeError:
-        print("Error decoding exixting JSON file\n")
+        print("Error decoding existing JSON file.\n")
     finally:
         if transactions == None:
             return False
@@ -72,12 +84,7 @@ def addTransaction():
         transactions = []
     print("\nAdd transaction")
     print('')
-    while True:
-        T_amount = floatInput("Enter the transaction amount: ", "Please enter a valid amount in numbers.")
-        if T_amount > 0:
-            break
-        else:
-            print("Please enter a valid amount (amount should be higher than 0).")
+    T_amount = amountInput()
     while True:
         T_category = input("Enter the category of the transaction: ")
         if len(T_category) > 0:
@@ -106,7 +113,7 @@ def addTransaction():
 def viewTransactions(topic = "\nView Transactions"):
     transactions = loadTransactions()
     if transactions == False:
-        print("There is no saved transactions, You need to have saved transactions to complete this action.")
+        print("There are no saved transactions, You need to have saved transactions to complete this action.")
     else:
         print(topic)
         print('')
@@ -114,7 +121,7 @@ def viewTransactions(topic = "\nView Transactions"):
         for i in range(len(transactions)):
             print(f"{i+1} - {transactions[i]}")
         print('')
-        print("All saved transactions loded.")
+        print("All saved transactions loaded.")
         return transactions
 
 def updateConf(transactions, ID, ChangeID, value, message):
@@ -148,13 +155,8 @@ def updateTransaction():
                 while True:
                     ChangeID = intInput("Select what data you want change: ")
                     if ChangeID == 1:
-                        while True:
-                            T_amount = floatInput("Enter the new transaction amount: ", "Please enter a valid amount in numbers.")
-                            if T_amount > 0:
-                                updateConf(transactions, ID, ChangeID, T_amount, "amount")
-                                break
-                            else:
-                                print("Please enter a valid amount (amount should be higher than 0).")
+                        T_amount = amountInput()
+                        updateConf(transactions, ID, ChangeID, T_amount, "amount")     
                         break
                     elif ChangeID == 2:
                         while True:
@@ -225,8 +227,9 @@ def deleteTransaction():
             print("Please enter a valid transaction ID.")
 
 def printSummary(count, value):
+    amount = "{:.2f}".format(value)
     print(f" Total number of transactions:  {count}")
-    print(f" Total value of transactions :  {value}")
+    print(f" Total value of transactions :  {amount}")
 
 def displaySummary():
     transactions = loadTransactions()
@@ -243,10 +246,10 @@ def displaySummary():
         print('')
         for i in range(len(transactions)):
             if transactions[i][2] == "Income":
-                TotalIncomeA += transactions[i][0]
+                TotalIncomeA += float(transactions[i][0])
                 IncomeCount += 1
             else:
-                TotalExpensesA += transactions[i][0]
+                TotalExpensesA += float(transactions[i][0])
                 ExpensesCount += 1
         print("Income transactions")
         printSummary(IncomeCount, TotalIncomeA)
