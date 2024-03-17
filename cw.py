@@ -204,8 +204,6 @@ def deleteTransaction():
     print('')
     while True:
         ID = intInput("Enter the ID of the transaction you want to delete: ")
-        print(ID-1)
-        print(len(transactions))
         if 0 < (ID) < len(transactions):
             print('')
             print(f"{ID} - {transactions[ID-1]}")
@@ -238,7 +236,7 @@ def displaySummary():
     IncomeCount = 0
     ExpensesCount = 0
     if transactions == False:
-        print("There is no saved transactions, You need to have saved transactions to complete this action")
+        print("There are no saved transactions, You need to have saved transactions to complete this action.")
     else:
         print("\nTransactions summary")
         print('')
