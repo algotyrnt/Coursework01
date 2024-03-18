@@ -25,7 +25,7 @@ def floatInput(inputMessage, errorMessage = "Invalid input, please try again.\n"
 def dateInput():
     #Get date input from the user with error handling.
     while True:
-        try:
+        try: # make sure sure inputed date is in a valid format
             date_s = input("Enter transaction date (formatted as 'yyyy-mm-dd'): ")
             date_f = "%Y-%m-%d"
             datetime.strptime(date_s, date_f)
@@ -38,10 +38,9 @@ def amountInput():
     #Get transaction amount input from the user with error handling.
     while True:
         amount = floatInput("Enter the transaction amount: ", "Please enter a valid transaction amount in numbers.\n")
-        fractionalAmount = str(amount).split('.')[1]
-        print(fractionalAmount)
-        if amount > 0 and len(fractionalAmount) < 3:
-            amount_str = "{:.2f}".format(amount)
+        fractionalAmount = str(amount).split('.')[1] # get the decimal points of the transaction seperatly
+        if amount > 0 and len(fractionalAmount) < 3: # make sure inputed transaction amount is valid
+            amount_str = "{:.2f}".format(amount) # convert the transaction amount to a string with two decimal points
             return amount_str
             break
         else:
@@ -58,7 +57,7 @@ def loadTransactions():
         print("Saved transactions data file does not exist, Adding a new transaction will create one.")
     except json.JSONDecodeError:
         print("Error decoding existing JSON file.\n")
-    finally:
+    finally:# check whether there are saved transactions in the file
         if transactions == None:
             return False
         elif len(transactions) == 0:
@@ -75,7 +74,7 @@ def returnToMainMenu():
     #Prompt the user to return to the main menu or exit the program.
     while True:
         print("\nEnter 1 to return to main menu.\nEnter 0 to exit the program.")
-        selection = intInput(" Your choice: ")
+        selection = intInput(" Your choice: ") # ask the user wheather to exit to the menu or exit from the program
         if selection == 1:
             print("Returning to main menu....\n")
             mainMenu()
@@ -91,14 +90,14 @@ def returnToMainMenu():
 def addTransaction():
     #Add a new transaction.
     transactions = loadTransactions() # Load transactions at the start
-    if transactions == False:
-        transactions = []
+    if transactions == False: # check wheather there are transactions saved
+        transactions = [] # if not create the transactions list
     print("\nAdd transaction")
     print('')
-    T_amount = amountInput()
+    T_amount = amountInput() # transaction amount input
     while True:
-        T_category = input("Enter the category of the transaction: ")
-        if len(T_category) > 0:
+        T_category = input("Enter the category of the transaction: ") # transaction category input
+        if len(T_category) > 0:#make sure user inputed a category
             break
         else:
             print("You can't keep transaction category empty.")
@@ -106,32 +105,32 @@ def addTransaction():
     print(" 1. Income")
     print(" 2. Expense")
     while True:
-        T_typeN = intInput("Enter the transaction type (1/2): ", "Input is not valid, check and try again. Input should be 1 or 2.")
-        if T_typeN == 1:
+        T_typeN = intInput("Enter the transaction type (1/2): ", "Input is not valid, check and try again. Input should be 1 or 2.") # transaction type input
+        if T_typeN == 1: # income transaction
             T_type = "Income"
             break
-        elif T_typeN == 2:
+        elif T_typeN == 2: # expense transaction
             T_type = "Expense"
             break
-        else:
+        else: # invalid type
             print("Input is not valid, check and try again. Input should be 1 or 2.")
-    T_date = dateInput()
-    transaction = [T_amount, T_category, T_type, T_date]
-    transactions.append(transaction)
+    T_date = dateInput() # transaction date input
+    transaction = [T_amount, T_category, T_type, T_date]#create a list from inputted data
+    transactions.append(transaction)#append that list to main list
     saveTransactions(transactions)
     print("\nTransaction successfully added.")
 
 def viewTransactions(topic = "\nView Transactions"):
     #View all saved transactions.
-    transactions = loadTransactions()
-    if transactions == False:
+    transactions = loadTransactions()# Load transactions at the start
+    if transactions == False: # make sure there are transactions saved to continue this action
         print("There are no saved transactions, You need to have saved transactions to complete this action.")
     else:
         print(topic)
         print('')
         print("ID  Transaction")
         for i in range(len(transactions)):
-            print(f"{i+1} - {transactions[i]}")
+            print(f"{i+1} - {transactions[i]}") # print the list of transactions one by one witha unique ID
         print('')
         print("All saved transactions loaded.")
         return transactions
@@ -141,9 +140,9 @@ def updateConf(transactions, ID, ChangeID, value, message):
     while True:
         yesno = input(f"Are you sure you want to update the transaction {message} (y/n): ").lower()
         if yesno == 'y':
-            transactions[ID-1][ChangeID-1] = value
-            saveTransactions(transactions)
-            print(f"Transaction {message} updated succsessfully.")
+            transactions[ID-1][ChangeID-1] = value # update the trasaction with new values
+            saveTransactions(transactions) #save transactions list with updated data
+            print(f"Transaction {message} updated successfully.")
             break
         elif yesno == 'n':
             print(f"Transaction {message} did not get updated.")
@@ -157,10 +156,10 @@ def updateTransaction():
     print('')
     while True:
         ID = intInput("Enter the ID of the transaction you want to update: ")
-        if 0 < (ID) < len(transactions):
+        if 0 < (ID) < len(transactions): #make sure transaction ID inputed by user is valid
             while True:
                 print('')
-                print(f"{ID} - {transactions[ID-1]}")
+                print(f"{ID} - {transactions[ID-1]}") #sepratly show the transaction user choose to edit
                 print('')
                 print("1. Amount")
                 print("2. Category")
@@ -168,43 +167,43 @@ def updateTransaction():
                 print("4. Date")
                 while True:
                     ChangeID = intInput("Select what data you want change: ")
-                    if ChangeID == 1:
-                        T_amount = amountInput()
-                        updateConf(transactions, ID, ChangeID, T_amount, "amount")     
+                    if ChangeID == 1: # if user want to change the amount
+                        T_amount = amountInput() # ask the user for the new ammount they want to change
+                        updateConf(transactions, ID, ChangeID, T_amount, "amount") #ask the user confirmation to change the data
                         break
-                    elif ChangeID == 2:
+                    elif ChangeID == 2: # if user want to change category
                         while True:
-                            T_category = input("Enter the new category of the transaction: ")
+                            T_category = input("Enter the new category of the transaction: ") # ask the user for the new category they want to change
                             if len(T_category) > 0:
-                                updateConf(transactions, ID, ChangeID, T_category, "category")
+                                updateConf(transactions, ID, ChangeID, T_category, "category") #ask the user confirmation to change the data
                                 break
                             else:
                                 print("You can't keep transaction category empty.")
                         break
-                    elif ChangeID == 3:
+                    elif ChangeID == 3: # if user want to change the transaction type
                         print("Transaction type")
                         print(" 1. Income")
                         print(" 2. Expense")
                         while True:
-                            T_typeN = intInput("Enter the new transaction type (1/2): ", "Input is not valid, check and try again. Input should be 1 or 2.")
+                            T_typeN = intInput("Enter the new transaction type (1/2): ", "Input is not valid, check and try again. Input should be 1 or 2.") # ask the user for the type they want to change
                             if T_typeN == 1:
                                 T_type = "Income"
-                                updateConf(transactions, ID, ChangeID, T_type, "type")
+                                updateConf(transactions, ID, ChangeID, T_type, "type") #ask the user confirmation to change the type to income
                                 break
                             elif T_typeN == 2:
                                 T_type = "Expense"
-                                updateConf(transactions, ID, ChangeID, T_type, "type")
+                                updateConf(transactions, ID, ChangeID, T_type, "type") #ask the user confirmation to change the type to expense
                                 break
                             else:
                                 print("Input is not valid, check and try again. Input should be 1 or 2.")
                         break
-                    elif ChangeID == 4:
+                    elif ChangeID == 4: #if the user want to change the date of the trasaction
                         T_date = dateInput()
-                        updateConf(transactions, ID, ChangeID, T_date, "date")
+                        updateConf(transactions, ID, ChangeID, T_date, "date") #ask the user confirmation to change the date
                         break
                     else:
                         print("Please select a valid input.")
-                anotherEdit = input("Enter 'A' to change another data type in the selected transaction, Enter any ket to exit : ").lower()
+                anotherEdit = input("Enter 'A' to change another data type in the selected transaction, Enter any ket to exit : ").lower() #ask the user if they want to make another change in the same transaction
                 if anotherEdit == 'a':
                     continue
                 else:
@@ -219,16 +218,16 @@ def deleteTransaction():
     print('')
     while True:
         ID = intInput("Enter the ID of the transaction you want to delete: ")
-        if 0 < (ID) < len(transactions):
+        if 0 < (ID) < len(transactions): #make sure transaction ID inputted by user is valid
             print('')
             print(f"{ID} - {transactions[ID-1]}")
             print('')
-            while True:
+            while True: # ask the users confirmation to delete the trasaction
                 yesno = input("Are you sure you want to delete this transaction (y/n): ").lower()
                 if yesno == 'y':
                     del transactions[ID-1]
-                    saveTransactions(transactions)
-                    print("Transaction deleted succsessfully.")
+                    saveTransactions(transactions) # save transactions list without the deleted transaction
+                    print("Transaction deleted successfully.")
                     break
                 elif yesno == 'n':
                     print("Transaction not deleted.")
@@ -248,28 +247,28 @@ def printSummary(count, value):
 def displaySummary():
     #Display summary of transactions.
     transactions = loadTransactions() # Load transactions at the start
-    TotalIncomeA = 0
+    TotalIncomeA = 0 # initiate variabales
     TotalExpensesA = 0
     IncomeCount = 0
     ExpensesCount = 0
-    if transactions == False:
+    if transactions == False: # make sure there are transactions saved to continue this action
         print("There are no saved transactions, You need to have saved transactions to complete this action.")
     else:
         print("\nTransactions summary")
         print('')
-        print(f"Total number of transactions :  {len(transactions)+1}")
+        print(f"Total number of transactions :  {len(transactions)+1}") 
         print('')
         for i in range(len(transactions)):
-            if transactions[i][2] == "Income":
+            if transactions[i][2] == "Income": # generate the summary for income transactions
                 TotalIncomeA += float(transactions[i][0])
                 IncomeCount += 1
-            else:
+            else: # generate the summary for expense transactions
                 TotalExpensesA += float(transactions[i][0])
                 ExpensesCount += 1
         print("Income transactions")
-        printSummary(IncomeCount, TotalIncomeA)
+        printSummary(IncomeCount, TotalIncomeA) # print the summary for income transactions
         print("Expenses transactions")
-        printSummary(ExpensesCount, TotalExpensesA)
+        printSummary(ExpensesCount, TotalExpensesA) # print the summary for expense transactions
         print("")
         print("end of the summary.")
 
@@ -277,22 +276,22 @@ def menuChoice():
     #Handle user menu choice.
     while True:
         choice = intInput("Enter your choice : ")
-        if 1 <= choice <= 6:
+        if 1 <= choice <= 6: # make sure user entered a valid choice
             break
         else:
             print("Invalid choice, please try again.\n")
         print('')
 
     if choice == 1:
-        addTransaction()
+        addTransaction() # calls add transaction function
     elif choice == 2:
-        viewTransactions()
+        viewTransactions() # calls view transaction function
     elif choice == 3:
-        updateTransaction()
+        updateTransaction() # calls update transaction function
     elif choice == 4:
-        deleteTransaction()
+        deleteTransaction() # calls display transaction function
     elif choice == 5:
-        displaySummary()
+        displaySummary() # calls display summary function
     else:
         print("Exiting the program....\n")
         exit()
