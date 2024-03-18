@@ -256,7 +256,7 @@ def displaySummary():
     else:
         print("\nTransactions summary")
         print('')
-        print(f"Total number of transactions :  {len(transactions)+1}") 
+        print(f"Total number of transactions :  {len(transactions)}") 
         print('')
         for i in range(len(transactions)):
             if transactions[i][2] == "Income": # generate the summary for income transactions
