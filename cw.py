@@ -156,7 +156,7 @@ def updateTransaction():
     print('')
     while True:
         ID = intInput("Enter the ID of the transaction you want to update: ")
-        if 0 < (ID) < len(transactions): #make sure transaction ID inputed by user is valid
+        if 1 <= (ID) <= len(transactions): #make sure transaction ID inputed by user is valid
             while True:
                 print('')
                 print(f"{ID} - {transactions[ID-1]}") #sepratly show the transaction user choose to edit
@@ -218,7 +218,7 @@ def deleteTransaction():
     print('')
     while True:
         ID = intInput("Enter the ID of the transaction you want to delete: ")
-        if 0 < (ID) < len(transactions): #make sure transaction ID inputted by user is valid
+        if 1 <= (ID) <= len(transactions): #make sure transaction ID inputted by user is valid
             print('')
             print(f"{ID} - {transactions[ID-1]}")
             print('')
