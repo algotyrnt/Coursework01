@@ -1,5 +1,8 @@
-This Python script serves as a simple personal finance tracker, allowing users to add, view, update, delete transactions, and display a summary of their financial activities. 
+This Python program serves as a simple personal finance tracker, allowing users to add, view, update, delete transactions, and display a summary of their financial activities. 
 The transactions are stored in a JSON file named 'transactions.json'.
+If the programm isn't used befor there will be no saved transactions in the saved file.
+User can add transactions from the option given in the menu.
+Program requires to have saved transaction to  view, update, delete transactions, and display a summary of transactions.
 
 Libraries used:
 1. json: Provides functions for working with JSON data.
