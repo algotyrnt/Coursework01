@@ -59,7 +59,7 @@
             PRINT error message and RETURN False
         END IF
         IF no transactions or error, 
-            RETURN False
+            RETURN NONE
         ELSE 
             RETURN transactions
         END IF
@@ -71,6 +71,23 @@
         WRITE transactions data to file in JSON format
         CLOSE file
     END FUNCTION
+
+    FUNCTION read_bulk_transactions_from_file(filename, transactions)
+        IF transactions == None THEN
+            transactions = {}
+        END IF
+        TRY OPEN filename in read mode
+            FOR EACH line IN file DO
+                Add transactions to the dictionary
+            END FOR
+            TRUNCATE the file
+        EXCEPT FileNotFoundError
+            PRINT "transactions.txt file not found."
+        ELSE
+            saveTransactions(transactions)
+            PRINT success message
+    END FUNCTION
+
 
     FUNCTION returnToMainMenu()
         WHILE valid input for choice is not given DO
@@ -90,14 +107,22 @@
     FUNCTION addTransaction()
         transactions = loadTransactions()
         IF no transactions
-            INITIALIZE empty list called transactions
+            INITIALIZE empty dictionary called transactions
         End IF
-        PROMPT user for transaction details (amount, category, type, date)
-        VALIDATE input for amount, category, type, and date 
-        CREATE new transaction sublist with input details
-        APPEND the new transaction sublist to the transactions list
-        SAVE updated transactions to file
-        PRINT success message
+        IF user wants add a transaction
+            PROMPT user for transaction details (amount, category, date)
+            VALIDATE input for amount, category, and date 
+            Check whether category is in the the dictonary
+            If the category is in the dictonary
+                Add the new transcation datails as a value
+            ELSE
+                create a new key in the dictionary for the category
+                Add the new transcation datails as a value
+            SAVE updated transactions to file
+            PRINT success message
+        IF user wants to add bulk of transactions
+            ask the user for the filename
+            read_bulk_transactions_from_file(filename, transactions)
     END FUNCTION
 
     FUNCTION viewTransactions(topic)
@@ -108,7 +133,7 @@
             PRINT topic
             PRINT table header
             LOOP through transactions 
-                PRINT each transaction with its index +1 as ID
+                PRINT each transaction under their category with a unique index as ID
             END LOOP
             PRINT all transactions loaded
             RETURN transactions list
@@ -130,19 +155,13 @@
 
     FUNCTION updateTransaction()
         CALL viewTransactions() to display transactions
-        PROMPT user for transaction ID to update
-        IF ID is valid
+        PROMPT user for transaction category and ID to update
+        IF ID and transaction category is valid
             PRINT current transaction details
             LOOP the code for user to update data
                 PROMPT user for which detail to update (amount, category, type, date)
                 IF detail is amount:
                     PROMPT for new amount and UPDATE
-                    updateConf()
-                ELSE IF detail is category:
-                    PROMPT for new category and UPDATE
-                    updateConf()
-                ELSE IF detail is type:
-                    PROMPT for new type and UPDATE
                     updateConf()
                 ELSE IF detail is date:
                     PROMPT for new date and UPDATE
@@ -160,8 +179,8 @@
     FUNCTION deleteTransaction()
         CALL viewTransactions() to display transactions
         WHILE
-            PROMPT user for transaction ID to delete
-            IF ID is valid
+            PROMPT user for transaction type and ID to delete
+            IF Type and ID is valid
                 PRINT current transaction details
                 PROMPT user for confirmation to delete transaction
                 IF yes:
@@ -176,26 +195,17 @@
                 continue the LOOP
     END FUNCTION 
 
-    FUNCTION printSummary(count, value)
-        PRINT transaction count and total value
-    END FUNCTION
-
     FUNCTION displaySummary()
         transactions = loadTransactions()
         IF no transactions
             PRINT error message
             returnToMainMenu()
         ELSE
-            INITIALIZE variables for total income, total expenses, income count, and expenses count
             LOOP through transactions
-                IF transaction type is income
-                    ADD amount to total income and INCREMENT income count
-                ELSE
-                    ADD amount to total expenses and INCREMENT expenses count
-                END IF
+                Print the transaction category
+                Print the totall number of transactions under that category
+                Print the totall value of transactions under that category
             END LOOP
-            PRINT summary of income transactions using printSummary(count and total value)
-            PRINT summary of expense transactions using printSummary(count and total value)
         END IF
     END FUNCTION
 

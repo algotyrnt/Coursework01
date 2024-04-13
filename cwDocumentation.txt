@@ -1,7 +1,10 @@
 This Python program serves as a simple personal finance tracker, allowing users to add, view, update, delete transactions, and display a summary of their financial activities. 
 The transactions are stored in a JSON file named 'transactions.json'.
 If the programm isn't used befor there will be no saved transactions in the saved file.
-User can add transactions from the option given in the menu.
+User can add transactions from the option given in the add transactions menu.
+To add bulk transactions, users have to save the amount, category, and date, respectively, to the order.
+	Example - 200.00, salary, 2024-04-06
+		- 500.00, health, 2024-04-10
 Program requires to have saved transaction to  view, update, delete transactions, and display a summary of transactions.
 
 Libraries used:
@@ -26,31 +29,35 @@ Libraries used:
 2. File Handling Functions:
     a. loadTransactions()
         This function attempts to load transactions from a JSON file named 'transactions.json'. 
-        If the file is not found or cannot be decoded, it returns False. 
-        Otherwise, it returns the loaded transactions as a list.
+        If the file is not found or cannot be decoded, it returns None. 
+        Otherwise, it returns the loaded transactions as a dictionary.
     b. saveTransactions(transactions)
         This function saves the provided transactions list to a JSON file named 'transactions.json'.
+    c. read_bulk_transactions_from_file(filename, transactions):
+        This function reads transactions from a file named `filename` 
+        It iterates through each line of the file, parsing the transaction details and adding them to the dictionary.
+        Then empty the file by deleting transactions after they get added to the program.
+    
 
 3. Transaction feature implementations Functions:
     a. addTransaction()
-        This function allows the user to add a new transaction. 
-        It prompts the user for transaction details (amount, category, type, date) and adds the transaction to the list of transactions.
+        This function allows the user to add a new transaction or add bulk of transactions from file. 
+        It prompts the user for transaction details (amount, category, date) and adds the transaction to the dictionary of transactions.
+        Or it calls read_bulk_transactions_from_file() function if user wante to add bulk of transactions.
     b. viewTransactions(topic)
         This function displays the list of transactions loaded from the file. 
         If there are no transactions, it prints an error message. 
-        It returns the list of transactions for further processing.
+        It returns the dictionary of transactions for further processing.
     c. updateConf(transactions, ID, ChangeID, value, message)
-        This function updates a specific transaction attribute (amount, category, type, date) based on user input.
+        This function updates a specific transaction attribute (amount, date) based on user input.
     d. updateTransaction()
         This function allows the user to update an existing transaction. 
-        It displays the list of transactions, prompts the user for the ID of the transaction to update, and then prompts for the attribute to update.
+        It displays transactions, prompts the user for the Category and ID of the transaction to update, and then prompts for the attribute to update.
     e. deleteTransaction()
         This function allows the user to delete an existing transaction. 
-        It displays the list of transactions, prompts the user for the ID of the transaction to delete, and then confirms the deletion.
-    f. printSummary(count, value)
-        This function prints a summary of transaction count and total value.
-    g. displaySummary()
-        This function displays a summary of income and expenses transactions, including their counts and total values.
+        It displays transactions, prompts the user for the Category and ID of the transaction to delete, and then confirms the deletion.
+    f. displaySummary()
+        This function displays a summary of transactions according to their category, including their counts and total values.
 
 4. Menu Functions:
     a. menuChoice()
